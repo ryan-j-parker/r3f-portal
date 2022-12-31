@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+/* eslint-disable react/no-unknown-property */
 import './App.css';
+import Experience from './Experience';
+import { Canvas } from '@react-three/fiber';
+import { Leva } from 'leva';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Leva 
+        
+      />
+      <Canvas
+        camera={{
+          fov: 45,
+          near: 0.1,
+          far: 200,
+          position: [1, 2, 8],
+        }}
+      >
+        <color args={['#201919']} attach="background" />
+        <Experience />
+      </Canvas>
+    </>
   );
 }
 
