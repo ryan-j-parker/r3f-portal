@@ -6,13 +6,17 @@ import {
   useTexture,
   Center,
   Sparkles,
+  PresentationControls,
+  useAnimations,
 } from '@react-three/drei';
 import { useControls, folder } from 'leva';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import portalVertexShader from './shaders/portal/vertex.js';
 import portalfragmentShader from './shaders/portal/fragment.js';
 import * as THREE from 'three';
 import { useFrame, extend } from '@react-three/fiber';
+import Druid from './Druid.js';
+import { Fog } from 'three';
 
 const PortalMaterial = shaderMaterial(
   {
@@ -49,37 +53,48 @@ export default function Experience() {
     }),
   });
 
+  const fog = new THREE.Fog();
+
   return (
     <>
-      <OrbitControls makeDefault />
-      <Center>
-        <Sparkles size={size} scale={[3, 2, 4]} position-y={1} speed={sparkleSpeed} />
-        <group
-          ref={portalRef}
-          scale={1.5}
-        >
-          <mesh geometry={nodes.baked.geometry}>
-            <meshBasicMaterial map={bakedTexture} />
-          </mesh>
-          <mesh geometry={nodes.poleLightA.geometry} position={nodes.poleLightA.position}>
-            <meshBasicMaterial color="#ffffe5" />
-          </mesh>
-          <mesh geometry={nodes.poleLightB.geometry} position={nodes.poleLightB.position}>
-            <meshBasicMaterial color="#ffffe5" />
-          </mesh>
-          <mesh
-            geometry={nodes.portalLight.geometry}
-            position={nodes.portalLight.position}
-            rotation={nodes.portalLight.rotation}
-          >
-            <portalMaterial ref={portalMaterial} />
-          </mesh>
-          <mesh rotation-x={Math.PI * 0.5} receiveShadow>
-            <planeGeometry args={[4, 4]} />
-            <meshBasicMaterial color="#b39231" />
-          </mesh>
-        </group>
-      </Center>
+      {/* <OrbitControls makeDefault /> */}
+      <ambientLight />
+      <fog />
+      <PresentationControls
+        global
+        rotation={[0.13, 0.1, 0]}
+        polar={[-0.4, 0.2]}
+        azimuth={[-1, 0.75]}
+        config={{ mass: 2, tension: 400 }}
+        snap={{ mass: 4, tension: 400 }}  
+      >
+        <Center>
+          <Druid />
+          <Sparkles size={size} scale={[3, 2, 4]} position-y={1} speed={sparkleSpeed} />
+          <group ref={portalRef} scale={1.5}>
+            <mesh geometry={nodes.baked.geometry}>
+              <meshBasicMaterial map={bakedTexture} />
+            </mesh>
+            <mesh geometry={nodes.poleLightA.geometry} position={nodes.poleLightA.position}>
+              <meshBasicMaterial color="#ffffe5" />
+            </mesh>
+            <mesh geometry={nodes.poleLightB.geometry} position={nodes.poleLightB.position}>
+              <meshBasicMaterial color="#ffffe5" />
+            </mesh>
+            <mesh
+              geometry={nodes.portalLight.geometry}
+              position={nodes.portalLight.position}
+              rotation={nodes.portalLight.rotation}
+            >
+              <portalMaterial ref={portalMaterial} />
+            </mesh>
+            <mesh rotation-x={Math.PI * 0.5} receiveShadow>
+              <planeGeometry args={[4, 4]} />
+              <meshBasicMaterial color="#b39231" />
+            </mesh>
+          </group>
+        </Center>
+      </PresentationControls>
     </>
   );
 }
