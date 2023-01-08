@@ -13,7 +13,7 @@ export default function Druid(props) {
 
   useEffect(() => {
     actions[names[0]].play();
-  }, []);
+  });
 
   return (
     <group
