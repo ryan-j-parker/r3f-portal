@@ -9,6 +9,7 @@ import {
   PresentationControls,
   useAnimations,
   Loader,
+  Suspense,
 } from '@react-three/drei';
 import { useControls, folder } from 'leva';
 import { useEffect, useRef } from 'react';
